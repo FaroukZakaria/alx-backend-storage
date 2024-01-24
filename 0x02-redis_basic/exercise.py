@@ -8,11 +8,13 @@ from functools import wraps
 import redis
 
 
+call_counts = {}
+
 def count_calls(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         key = f"{method.__qualname__}_calls"
-        self._redis.incr(key)
+        call_counts[key] = call_counts.get(key, 0) + 1
         return method(self, *args, **kwargs)
 
     return wrapper
