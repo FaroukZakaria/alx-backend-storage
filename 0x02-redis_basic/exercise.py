@@ -2,9 +2,10 @@
 """
 Using redis commands exercise
 """
-import redis
-from typing import Union
 import uuid
+from typing import Union
+
+import redis
 
 
 class Cache():
