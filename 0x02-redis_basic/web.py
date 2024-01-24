@@ -5,6 +5,7 @@ import redis
 from functools import wraps
 import time
 
+
 def cache_result(expiration_time):
     """
     result
@@ -42,6 +43,7 @@ def cache_result(expiration_time):
         return wrapper
     return decorator
 
+
 @cache_result(expiration_time=10)
 def get_page(url: str) -> str:
     """
@@ -49,6 +51,7 @@ def get_page(url: str) -> str:
     """
     response = requests.get(url)
     return response.text
+
 
 # Initialize Redis client
 redis_client = redis.Redis()
