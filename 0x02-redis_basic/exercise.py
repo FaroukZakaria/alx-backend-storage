@@ -17,7 +17,7 @@ class Cache():
         """
         self._redis = redis.Redis()
         self._redis.flushdb()
-    
+
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store random generated ID to instance
@@ -26,8 +26,3 @@ class Cache():
         self._redis.set(key, data)
 
         return key
-    
-# Example usage:
-cache_instance = Cache()
-key = cache_instance.store("Hello, Redis!")
-print("Stored key:", key)
