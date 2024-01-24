@@ -21,10 +21,16 @@ class Cache():
 
     @staticmethod
     def count_calls(method: Callable) -> Callable:
+        """
+        count_calls
+        """
         key = method.__qualname__
 
         @wraps(method)
         def wrapper(self, *args, **kwargs):
+            """
+            Wrapper
+            """
             self._redis.incr(key)
             return method(self, *args, **kwargs)
 
