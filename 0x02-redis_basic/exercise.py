@@ -4,7 +4,7 @@ Using redis commands exercise
 """
 import uuid
 from typing import Union, Callable, Optional
-
+from functools import wraps
 import redis
 
 
@@ -19,6 +19,18 @@ class Cache():
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @staticmethod
+    def count_calls(method: Callable) -> Callable:
+        key = method.__qualname__
+
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+            self._redis.incr(key)
+            return method(self, *args, **kwargs)
+
+        return wrapper
+
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store random generated ID to instance
