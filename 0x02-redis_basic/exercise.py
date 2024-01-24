@@ -2,8 +2,8 @@
 """
 Using redis commands exercise
 """
-import uuid
 import redis
+import uuid
 from typing import Union
 
 
