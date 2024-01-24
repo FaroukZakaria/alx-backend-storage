@@ -3,7 +3,7 @@
 Using redis commands exercise
 """
 import uuid
-from typing import Union
+from typing import Union, Callable, Optional
 
 import redis
 
@@ -25,5 +25,16 @@ class Cache():
         """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
+
+    def get(
+            self, key: str, fn: Optional[Callable] = None) -> Union[
+                str, bytes, int, float]:
+        data = self._redis.get(key)
+
+        if data is None:
+            return None
+
+        if fn is not None:
+            return fn(data)
 
         return key
