@@ -4,9 +4,18 @@ Using redis commands exercise
 """
 import uuid
 from typing import Union, Callable, Optional
-from functools import wraps
+
 import redis
 
+
+def count_calls(method: Callable) -> Callable:
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        key = f"{method.__qualname__}_calls"
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+
+    return wrapper
 
 class Cache():
     """
@@ -18,23 +27,6 @@ class Cache():
         """
         self._redis = redis.Redis()
         self._redis.flushdb()
-
-    @staticmethod
-    def count_calls(method: Callable) -> Callable:
-        """
-        count_calls
-        """
-        key = method.__qualname__
-
-        @wraps(method)
-        def wrapper(self, *args, **kwargs):
-            """
-            Wrapper
-            """
-            self._redis.incr(key)
-            return method(self, *args, **kwargs)
-
-        return wrapper
 
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
