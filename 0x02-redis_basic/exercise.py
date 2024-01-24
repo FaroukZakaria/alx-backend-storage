@@ -3,8 +3,8 @@
 Using redis commands exercise
 """
 import redis
-import uuid
 from typing import Union
+import uuid
 
 
 class Cache():
