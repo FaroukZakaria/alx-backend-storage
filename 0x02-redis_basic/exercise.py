@@ -9,6 +9,9 @@ import redis
 
 
 def count_calls(method: Callable) -> Callable:
+    """
+    count calls documentation
+    """
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         key = f"{method.__qualname__}_calls"
@@ -18,6 +21,9 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 def replay(func: Callable) -> None:
+    """
+    replay documentation
+    """
     key_inputs = f"{func.__qualname__}:inputs"
     key_outputs = f"{func.__qualname__}:outputs"
 
@@ -29,8 +35,14 @@ def replay(func: Callable) -> None:
         print(f"{func.__qualname__}{args.decode()} -> {output.decode()}")
 
 def call_history(method: Callable) -> Callable:
+    """
+    call history documentation
+    """
     @wraps(method)
     def wrapper(self, *args, **kwargs):
+        """
+        wrapper documentation
+        """
         input_key = f"{method.__qualname__}:inputs"
         output_key = f"{method.__qualname__}:outputs"
 
