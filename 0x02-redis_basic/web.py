@@ -55,14 +55,3 @@ def get_page(url: str) -> str:
 
 # Initialize Redis client
 redis_client = redis.Redis()
-
-# Test the get_page function
-slow_url = "http://slowwly.robertomurray.co.uk/delay/10000/url/http://www.google.com"
-for _ in range(5):
-    content = get_page(slow_url)
-    print(content)
-    time.sleep(2)  # Introducing a delay to see caching in action
-
-# Print access count for the slow URL
-access_count = redis_client.get(f"count:{slow_url}")
-print(f"Access count for {slow_url}: {int(access_count)}")
