@@ -17,6 +17,17 @@ def count_calls(method: Callable) -> Callable:
 
     return wrapper
 
+def replay(func: Callable) -> None:
+    key_inputs = f"{func.__qualname__}:inputs"
+    key_outputs = f"{func.__qualname__}:outputs"
+
+    inputs = self._redis.lrange(key_inputs, 0, -1)
+    outputs = self._redis.lrange(key_outputs, 0, -1)
+
+    print(f"{func.__qualname__} was called {len(inputs)} times:")
+    for args, output in zip(inputs, outputs):
+        print(f"{func.__qualname__}{args.decode()} -> {output.decode()}")
+
 def call_history(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(self, *args, **kwargs):
